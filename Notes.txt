@@ -1,0 +1,66 @@
+dotnetCore 2.2 installer : https://dotnet.microsoft.com/download/thank-you/dotnet-sdk-2.2.402-windows-x64-installer
+
+Installing Node via NVM
+	https://medium.com/@Joachim8675309/installing-node-js-with-nvm-4dc469c977d9
+
+Why Node?
+	https://www.toptal.com/nodejs/why-the-hell-would-i-use-node-js
+
+Visual Studio Extensions 
+	AutoClose Tag
+	Auto Rename Tag
+	Bracket Pair Colorizer 2
+	C#
+	C# Extensions
+	ES7 React/Redux/GraphQL
+	Material Icon Theme
+	Nuget Package Manager
+	Prettier - Code Formatter
+	SQLite
+
+	
+GitHub Code Location: github.com/TryCatchLearn/Reactivities
+
+======================
+
+Walking Skeleton
+	Intro to Clean Architecture
+	Using the dotnet CLI
+	Reviewing the project templates
+	Running the app
+	EF Migrations: Scaffolding of the database using our code
+	Seeding data
+	Postman
+	Using git for source control
+	
+Skeletion Solution
+	Four projects
+		API : receiving HTTP requests and respond to them
+		Application : Process the business logic
+		Domain: I contain the business entities and do not depend on anything
+		Persistence
+
+
+Commands
+	dotnet --info
+	
+	
+Section 1
+-----------
+Reactivities folder
+	Reactivities.sln
+	Domain/
+	Application/
+	Persistence/
+	API/
+
+The csproj has a <PropertyGroup> with element <TargetFramework> , these are targetting netstandard2.0 
+
+1. dotnet new sln
+2. dotnet new project
+3. Add projects to sln
+4. Add references to project
+
+Creating a Domain entity
+------------------------
+

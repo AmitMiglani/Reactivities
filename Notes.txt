@@ -56,11 +56,165 @@ Reactivities folder
 
 The csproj has a <PropertyGroup> with element <TargetFramework> , these are targetting netstandard2.0 
 
-1. dotnet new sln
-2. dotnet new project
-3. Add projects to sln
-4. Add references to project
+1. dotnet new sln   >> Create a sln file with name of the folder
+2. dotnet new classlib -n Domain >> generates .csproj , obj, class1.cs files
+3. dotnet new classlib -n Application
+4. dotnet new classlib -n Persistence
+5. dotnet new webapi -n API
 
-Creating a Domain entity
-------------------------
+
+Add Projects to Solution and add references to projects
+--------------------------------------------------------
+This will be run from within the sln folder
+1. dotnet sln add Domain/
+2. dotnet sln add Persistence/
+3. dotnet sln add API/
+4. dotnet sln add Application/
+5. dotnet sln list
+
+Add references to the projects
+------------------------------
+From with Application folder
+1. dotnet add reference ..\Domain\
+2. dotnet add reference ..\Persistence\
+
+From with API project
+1. dotnet add reference ..\Application
+
+From with Persistence Project
+1. dotnet add reference ../Domain/
+
+Type 
+1. code . from with Reactivities folder
+
+
+==================================================
+Startup.cs
+
+HSTS : Header Secure Transport Service
+
+Disable the https/hsts settings in the Startup.cs and LaunchSettings.json
+Startup.cs
+	comment out app.useHsts()
+	comment out app.UseMvc()
+In LaunchSettings.json
+	comment out applicationUrl: https://localhost:5001
+
+In Launch Settings.json ,w e also specify the environment variable like ASPNETCORE_ENVIRONMENT: Development/Production
+
+Run a project:
+--------------
+dotnet run -p .\API\
+
+Creating Domain Entity
+----------------------
+
+Code first database creation
+Create a DataContext Class , make it extend from DbContext class which is part of EFramework class
+
+Ctrl + Shift + P == Open the Command Pallete:
+
+In Startup.cs , add dependency Injection:
+
+services.AddDbContext<DataContext>(opt => 
+            {
+                opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
+            });
+
+Command for creating ef migration: >> dotnet ef migrations add InitialCreate -p .\Persistence\ -s .\API\
+
+Command for Creating database from ef migration >> dotnet ef database update ( if we do not specify the migration name,
+it takes the name of the latest migration )
+
+The recommended way to create database is 
+1. Go to the Main method of the startup project 
+
+Add this logic:
+
+ var host = CreateWebHostBuilder(args).Build();
+
+            using ( var scope = host.Services.CreateScope())
+            {
+                    var services = scope.ServiceProvider;
+                    try
+                    {
+                        var context = services.GetRequiredService<DataContext>();
+                        context.Database.Migrate();
+                    }
+                    catch(Exception ex)
+                    {
+                        var logger = services.GetRequiredService<ILogger<Program>>();
+                        logger.LogError(ex, "An error occured during migration");
+                    }
+            }
+
+            host.Run();
+
+
+
+2. Now everything application is run, it will check for any existing migrations and do the migration and create the database
+if it does not exist.
+
+3.Now for to command prompt and from within the Startup project folder run the command
+	dotnet watch run 
+
+This command will only work insude the context of the startup project -- We will get an error if we use it as the solution
+level, even with the -p switch
+
+
+Seeding the data
+-----------------
+
+Use migrations to acutally seed the data.
+
+Add method to the class Persistence.DataContext.OnModelCreating
+
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Value>()
+            .HasData(
+                new Value {Id = 1, Name = "Value 101"},
+                new Value {Id = 2, Name = "Value 102"},
+                new Value {Id = 3, Name = "Value 103"}
+            );
+        }
+
+Then run the command 
+>> dotnet ef migrations add SeedValues -p .\Persistence\ -s .\API\
+-p specifies the class having the DbContext
+-s is the startup Project
+SeedValues is the name of the migrations
+
+Then restart the application
+
+Go to the startup project /API/ and run the command
+>> dotnet watch run
+
+
+How to access the data via API endpoint
+=======================================
+
+Go to ValuesController:
+
+Inject the DbContext to the ValuesController constructor. This is injected using the DI as we have added DbContext as 
+service in Startup.cs
+
+Then we query the database using this dbContext
+We are using Async query as written below:
+
+[HttpGet]
+        public async Task<ActionResult<IEnumerable<Value>>> Get()
+        {
+            var values = await _context.Values.ToListAsync();
+            return Ok(values);
+        }
+
+Task is added for Async Return, The method is also marked async.
+await is the method call we need to wait.
+Await takes in a function which is Async .
+
+Testing the API using the PostMan tool:
+=======================================
+
 

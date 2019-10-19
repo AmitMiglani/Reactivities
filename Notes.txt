@@ -218,3 +218,135 @@ Testing the API using the PostMan tool:
 =======================================
 
 
+
+Module 3
+========
+
+Walking Skeleton Part 2 - Client
+
+In this module:
+	create-react-app
+	Review the app
+	React Concepts and Typescript
+	React State
+	Featching data from the APICORS
+	Semantic UI
+
+Will use create-react-app , this is facebook tool
+Run the command  >> npx create-react-app client-app --use-npm --typescript
+
+React app is a single page application ==> there is a single index.html page
+
+The index.html does not contain any JavaScript references, the create-react-app uses 'Webpack' in the background
+This weebpack provides the JavaScript references
+
+index.tsx is the main entry point into the app. 
+This calls : ReactDOM.render(<App />, document.getElementById('root')); 
+Here , we are searching for 'root' element within the document and then rendering the App/ component inside it.
+
+The App component is within App.tsx => Now this is a Function component
+const App: React.FC = () => {
+  return (
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          Edit <code>src/App.tsx</code> and save to reload.
+        </p>
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
+      </header>
+    </div>
+  );
+}
+
+package.json contains a section 'scripts' which has the scripts to run the JavaScript.
+It uses react-scripts to run the application. react-scripts are provided by Facebook and these manage the script execution for us.
+
+We can use eject, react-scripts eject to bring the app outside the control of react-scripts.
+
+
+Why React ?
+Used by lot of big groups: Facebook, Instagram, AirBnB, Netflix
+
+React most loved in Stack Overflow Developer Survey 2019: Bug Community of React developers
+
+Reacct is fast : Uses concept of Virtual DOM, React stores compoent tree in Virtual DOM and patches it based on changes
+
+Easy to Learn: Uses minimal set of APIs 
+1. render()
+2. constructor()
+3. componentDidMount()
+4. componentWillUnMount()
+5. componentDidUpdate()
+6. setState()
+7. React component
+8. JSX
+9. React Hooks ( useState, useEffect and more ), can be hooked to function components for state management and lifecycle management
+
+React is just a library and not a Framework
+Does not come with nor has an opinion on
+	a. Forms
+	b. Validation
+	c. HTTP API calls
+	d. State management
+
+It is just javascript/typescript.
+
+
+REACT components
+================
+React Component combines all the aspects : HTML,JS, CSS together in single file rather than importing them separately. React uses JSX for this purposes
+React components have states, properties
+
+TypeScript Rocks
+================
+1. Strong Typing
+2. Object Oriented
+3. Better Intellisense
+4. Access Modifiers 
+5. Future JavaScript features 
+6. Catches silly mistakes in Development
+7. 3rd party libraries, Every JS module has TS def files
+
+TypeScript is annoying
+======================
+1. More upfront code
+2. 3rd party libraries, not all have TS support, rapidly diminishing problem
+3. Strict mode is ...strict!
+
+TS Demo
+=======
+1. tsconfig.json options-isolateModules flag: All files must be modules when this flag is set
+So remove this flag from tsconfig.json options
+
+React and TypeScript
+====================
+
+1. PropTypes are legacy for parameter type checking in React, replaced with Flow
+2. TypeScript since 2.1 React
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
